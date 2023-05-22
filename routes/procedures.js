@@ -155,9 +155,9 @@ router.post("/Procedure/adddataImages", upload.single('photo'), async (req, res)
         console.error(error);
         return res.status(500).send({ success: false, error: "An error occurred" });
       }
-      if (results.length === 0) {
-        return res.status(400).send({ success: false, error: "Invalid doctor_id" });
-      }
+      // if (results.length === null) {
+      //   return res.status(400).send({ success: false, error: "Invalid doctor_id" });
+      // }
 
       // Insert the data into the procedures table
       conn.query(

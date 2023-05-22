@@ -93,6 +93,60 @@ router.get("/provider/doctors/search/:providerId", (req, res) => {
     );
 });
 
+app.post('/patient/signup', (req, res) => {
+  const { email, password, name, age, gender, address, phone } = req.body;
+
+  // Query the database to check if the email is already registered
+  conn.query(
+    'SELECT * FROM patients WHERE email = ?',
+    [email],
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ success: false, error: 'An error occurred' });
+      } else {
+        // Check if the email is already registered
+        if (results.length > 0) {
+          res.status(409).send({ success: false, error: 'Email already registered' });
+        } else {
+          // Insert the new patient into the database
+          conn.query(
+            'INSERT INTO patients (email, password, name, age, gender, address, phone) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            [email, password, name, age, gender, address, phone],
+            (error, results) => {
+              if (error) {
+                console.error(error);
+                res.status(500).send({ success: false, error: 'An error occurred' });
+              } else {
+                res.status(200).send({ success: true, message: 'Patient signup successful' });
+              }
+            }
+          );
+        }
+      }
+    }
+  );
+});
+
+// API endpoint for patient update
+app.put('/api/patient/:patientId', (req, res) => {
+  const patientId = req.params.patientId;
+  const { email, password, name, age, gender, address, phone } = req.body;
+
+  // Update the patient information in the database
+  conn.query(
+    'UPDATE patients SET email = ?, password = ?, name = ?, age = ?, gender = ?, address = ?, phone = ? WHERE id = ?',
+    [email, password, name, age, gender, address, phone, patientId],
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ success: false, error: 'An error occurred' });
+      } else {
+        res.status(200).send({ success: true, message: 'Patient information updated' });
+      }
+    }
+  );
+});
 
 ////////provider update query////////
 router.put("/providerprofile/:id", (req, res) => {
