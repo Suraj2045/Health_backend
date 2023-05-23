@@ -204,7 +204,7 @@ router.post("/Procedure/speciality/searchProcedurehome",  (req, res) => {
       (error, results) => { 
         console.log(results);
 
-        if(results.length===0){res.status(400).send({ success: false, error:"procedure not found" });}
+        if(results===null){res.status(400).send({ success: false, error:"procedure not found" });}
 
         if (error) {
           // Handle any errors that occurred during the query

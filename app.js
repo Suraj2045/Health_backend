@@ -9,7 +9,7 @@ const register = require("./routes/register")
 const procedures = require("./routes/procedures")
 const doctor = require("./routes/doctors")
 // const logging= require("./routes/logging")
-const port = 8004;
+const port = 8080;
 
 app.use(express.json());
 app.use(cors());
